@@ -32,7 +32,7 @@ A simple and modern **Django-based web app** to upload, view, like and manage im
 
 ## 📂 Folder Structure
 ```
-image-uploader-django/
+your-photo-your-fame-django/
 │
 ├── myapp/
 │ ├── migrations/
