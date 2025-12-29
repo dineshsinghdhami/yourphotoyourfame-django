@@ -8,9 +8,8 @@ def home(request):
         if form.is_valid():
             form.save()
             return redirect('/')  # redirect after successful upload
-
     else:
         form = ImageForm()  # create an empty form if not POST
 
-    img = Image.objects.all()  # get all uploaded images
+    img = Image.objects.all().order_by('-date')  # newest first
     return render(request, 'myapp/home.html', {'img': img, 'form': form})
