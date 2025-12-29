@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css">
+
+  <!-- Font Awesome for Instagram-like heart -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <title>Image Uploader</title>
+
+  <style>
+    input[type="file"] {
+      width: 100%;
+    }
+
+    /* Responsive heading */
+    .upload-heading {
+      font-size: 2rem; /* default */
+    }
+
+    @media (max-width: 768px) {
+      .upload-heading {
+        font-size: 2.5rem; /* slightly larger on mobile */
+      }
+    }
+
+    .heart {
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.2s ease, color 0.2s ease;
+      color: #999; /* default gray */
+    }
+
+    .heart.liked {
+      color: #e1306c; /* Instagram pink/red */
+      transform: scale(1.3);
+    }
+  </style>
+</head>
+
+<body>
+<div class="container my-5">
+
+  <!-- Upload Section -->
+  <div class="py-4 text-center bg-secondary text-white rounded">
+    <h1 class="mb-4 upload-heading">Your Images, Your Fame</h1>
+
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-row justify-content-center">
+        <div class="col-12 col-md-6 mb-2">
+          {{ form.photo }}
+        </div>
+        <div class="col-12 col-md-auto">
+          <button type="submit" class="btn btn-danger btn-block px-4">
+            Upload
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!-- Gallery -->
+  <div class="row mt-4">
+    {% for x in img %}
+      <div class="col-12 col-sm-6 col-md-4">
+        <div class="card mb-3 shadow-sm">
+          <img src="{{ x.photo.url }}"
+               class="card-img-top"
+               style="height:200px;object-fit:cover;">
+
+          <div class="card-body text-center">
+            <!-- Instagram-like Heart -->
+            <span class="heart" data-id="{{ x.id }}" id="heart-{{ x.id }}">
+              <i class="fa-regular fa-heart"></i>
+            </span>
+
+            <!-- Likes Count -->
+            <p class="mt-2 mb-1">
+              <strong>
+                <span id="likes-{{ x.id }}">{{ x.likes }}</span>
+              </strong> likes
+            </p>
+
+            <small class="text-muted">
+              {{ x.date|date:"M d, Y H:i" }}
+            </small>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12 text-center text-muted mt-4">
+        No images uploaded yet.
+      </div>
+    {% endfor %}
+  </div>
+
+</div>
+
+<!-- Like Script -->
+<script>
+  document.querySelectorAll('.heart').forEach(heart => {
+    heart.addEventListener('click', function () {
+      const imageId = this.dataset.id;
+
+      fetch("{% url 'like_image' %}", {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": "{{ csrf_token }}",
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `image_id=${imageId}`
+      })
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById(`likes-${imageId}`).innerText = data.likes;
+
+        const icon = this.querySelector('i');
+
+        if (data.liked) {
+          icon.classList.remove('fa-regular');
+          icon.classList.add('fa-solid');
+          this.classList.add('liked');
+        } else {
+          icon.classList.remove('fa-solid');
+          icon.classList.add('fa-regular');
+          this.classList.remove('liked');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
