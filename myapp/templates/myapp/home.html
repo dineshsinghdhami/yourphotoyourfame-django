@@ -50,7 +50,6 @@
 <body>
 <div class="container my-5">
 
-  <!-- Upload Section -->
   <div class="py-4 text-center bg-secondary text-white rounded">
     <h1 class="mb-4 upload-heading">Your Images, Your Fame</h1>
 
@@ -69,7 +68,7 @@
     </form>
   </div>
 
-  <!-- Gallery -->
+
   <div class="row mt-4">
     {% for x in img %}
       <div class="col-12 col-sm-6 col-md-4">
@@ -87,7 +86,7 @@
               <i class="fa-regular fa-heart"></i>
             </span>
 
-            <!-- Likes Count -->
+          
             <p class="mt-2 mb-1">
               <strong>
                 <span id="likes-{{ x.id }}">{{ x.likes }}</span>
@@ -109,7 +108,7 @@
 
 </div>
 
-<!-- Image Zoom Modal -->
+
 <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     <div class="modal-content">
@@ -123,11 +122,10 @@
   </div>
 </div>
 
-<!-- Scripts -->
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<!-- Like Script -->
 <script>
   document.querySelectorAll('.heart').forEach(heart => {
     heart.addEventListener('click', function () {
@@ -171,4 +169,5 @@
 
 </body>
 </html>
+
 
