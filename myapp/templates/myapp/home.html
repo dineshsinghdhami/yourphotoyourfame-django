@@ -11,7 +11,7 @@
   <!-- Font Awesome for Instagram-like heart -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-  <title>Your Photo, Your Fame</title>
+  <title>Your Photo Your Fame</title>
 
   <style>
     input[type="file"] {
@@ -40,6 +40,13 @@
       color: #e1306c; /* Instagram pink/red */
       transform: scale(1.3);
     }
+
+    /* Optional: hover zoom effect on gallery image */
+    .img-zoom:hover {
+      transform: scale(1.05);
+      transition: transform 0.2s ease;
+      cursor: pointer;
+    }
   </style>
 </head>
 
@@ -48,7 +55,7 @@
 
   <!-- Upload Section -->
   <div class="py-4 text-center bg-secondary text-white rounded">
-    <h1 class="mb-4 upload-heading">Your Photo, Your Fame</h1>
+    <h1 class="mb-4 upload-heading">Your Images, Your Fame</h1>
 
     <form method="post" enctype="multipart/form-data">
       {% csrf_token %}
@@ -71,8 +78,11 @@
       <div class="col-12 col-sm-6 col-md-4">
         <div class="card mb-3 shadow-sm">
           <img src="{{ x.photo.url }}"
-               class="card-img-top"
-               style="height:200px;object-fit:cover;">
+               class="card-img-top img-zoom"
+               style="height:200px;object-fit:cover;"
+               data-toggle="modal"
+               data-target="#imageModal"
+               data-src="{{ x.photo.url }}">
 
           <div class="card-body text-center">
             <!-- Instagram-like Heart -->
@@ -101,6 +111,24 @@
   </div>
 
 </div>
+
+<!-- Image Zoom Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body p-0">
+        <img id="modalImage" src="" class="img-fluid w-100">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <!-- Like Script -->
 <script>
@@ -134,8 +162,15 @@
       });
     });
   });
+
+  // Image zoom modal
+  const modalImage = document.getElementById('modalImage');
+  document.querySelectorAll('.img-zoom').forEach(img => {
+    img.addEventListener('click', function () {
+      modalImage.src = this.dataset.src;
+    });
+  });
 </script>
 
 </body>
 </html>
-
