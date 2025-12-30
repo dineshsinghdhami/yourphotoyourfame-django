@@ -27,10 +27,10 @@ SECRET_KEY = 'django-insecure-%t@$psw4#bc2p=cxymy4^1(+n_vag29j%d0u*7he=+s#pqbq)a
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'yourphotoyourfame.pythonanywhere.com',  # PythonAnywhere
+    'yourphotoyourfame.pythonanywhere.com',  
     '127.0.0.1:8000',
-     '127.0.0.1',                                               # Localhost
-    'localhost',                         # Localhost
+     '127.0.0.1',                                               
+    'localhost',                        
 ]
 
 
@@ -130,3 +130,4 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
