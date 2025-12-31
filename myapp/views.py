@@ -15,21 +15,21 @@ def home(request):
     img = Image.objects.all().order_by('-date')
     return render(request, 'myapp/home.html', {'img': img, 'form': form})
 
-# <-- REPLACE YOUR LIKE_VIEW WITH THIS -->
+
 def like_image(request):
     image_id = request.POST.get('image_id')
     image = Image.objects.get(id=image_id)
 
-    # Get liked images from session
+
     liked_images = request.session.get('liked_images', [])
 
     if image_id in liked_images:
-        # UNLIKE
+
         image.likes -= 1
         liked_images.remove(image_id)
         liked = False
     else:
-        # LIKE
+
         image.likes += 1
         liked_images.append(image_id)
         liked = True
@@ -41,4 +41,5 @@ def like_image(request):
         'likes': image.likes,
         'liked': liked
     })
+
 
